@@ -1,0 +1,18 @@
+perm, 
+bubble, X
+shake,  X
+insertion, X
+shell, 	   X
+selection, X
+rank, 
+quickrecursivoprimeiro,
+quickrecursivocentral,   
+quickrecursivomediana3,   
+quickprimeiro,   
+quickcentral,
+quickmediana3, 
+merge, X
+heap, 
+radix, 
+radixbin 
+bucket.
