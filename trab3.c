@@ -204,19 +204,36 @@ void shake_sort(int* vet, int n) {
     }//fecha while 
  }// fim da funçao
 
-void rank_sort (int* vet, int n){
-int maior = 0;
-int i;
+  void rank_sort (int* vet, int n){
+  int maior = 0;
+  int i;
 
-for (i=0;i<n;i++){
-  if (maior > vet[i]){
-    maior = vet[i];
+  for (i=0;i<n;i++){
+    if (vet[i] > maior){
+      maior = vet[i];
+    }
   }
-}
 
-printf("\n Maior elemento é: %d",maior);
+  int* vetor2 = (int*)malloc(n*sizeof(int));
+  for (i=0;i<n;i++){
+    vetor2[i]=0;  
+  }
 
-}
+  for (i=0;i<n;i++){
+    vetor2[vet[i]-1]= vetor2[vet[i]-1] + 1; 
+  }
+  
+  for (i=0;i<n;i++){
+    vetor2[i+1] = vetor2[i+1] + vetor2[i];
+  }
+
+
+  printf("\nMaior elemento é: %d\n",maior);
+  for (i=0;i<n;i++){
+    printf("%d \n",vetor2[i]);  
+  }
+
+  }
 
 
 
@@ -267,8 +284,8 @@ int main(int argc, char** argv){
  
   else if (strcmp(tipo,"rank") == 0){
   rank_sort(vet, n);
-  imprimirVetor(n,vet);
-  free(vet);
+  // imprimirVetor(n,vet);
+  // free(vet);
   
   }
 
