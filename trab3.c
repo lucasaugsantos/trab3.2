@@ -328,7 +328,7 @@ void radix_sort_binary( int* vet, int n) {
   int queue_0[n];
   int queue_1[n];
   int i,j,mask;
-  for ( i = 0, mask = 1; ++i, mask <<= 1 ;) {
+  for ( i = 0, mask = 1; ++i, mask <<= 1;) {
     int tail_0 = 0;
     int tail_1 = 0;
 
@@ -452,7 +452,113 @@ void quickrecursivomediana3 (int * vet, int n) {
     quickrecursivomediana3(vet, i);
     quickrecursivomediana3(vet + i, n - i);
 }
- 
+
+void quickprimeiro(int *vet, int n) {
+
+  int MAX_LEVELS = n;
+  
+  int  piv, beg[MAX_LEVELS], end[MAX_LEVELS], i=0, L, R, swap ;
+
+  beg[0]=0; 
+  end[0]=n;
+  while (i>=0) {
+    L=beg[i]; 
+    R=end[i]-1;
+    if (L<R) {
+      piv=vet[L];
+      while (L<R) {
+        while (vet[R]>=piv && L<R) R--; if (L<R) vet[L++]=vet[R];
+        while (vet[L]<=piv && L<R) L++; if (L<R) vet[R--]=vet[L]; }
+      vet[L]=piv; beg[i+1]=L+1; end[i+1]=end[i]; end[i++]=L;
+      if (end[i]-beg[i]>end[i-1]-beg[i-1]) {
+        swap=beg[i]; beg[i]=beg[i-1]; beg[i-1]=swap;
+        swap=end[i]; end[i]=end[i-1]; end[i-1]=swap; }}
+    else {
+      i--; }}}
+
+long int fatorial(int n){
+  if(n==1)
+    return 1;
+  else
+    return (n*fatorial(n-1));
+}
+void liberarVetores(int** permutacoes, int* valor, long int p){
+  int i;
+
+  for(i=0; i<p; i++){
+    free(permutacoes[i]);
+  }
+
+  free(valor);
+  free(permutacoes);
+}
+
+void addItem(int* vetor, int** permutacoes, int n){
+  static int indice = 0;
+    int i = 0;
+
+    int* novo = (int*)malloc(n*sizeof(int));
+
+    for(i=0; i<n; i++){
+      novo[i]=vetor[i] -1;
+    }
+
+    permutacoes[indice++] = novo;
+}
+
+
+void visit(int k, int n, int* valor, int** permutacoes){
+    int i;
+    static int level = -1;
+
+    level = level+1;
+    valor[k] = level;
+    if (level == n)
+      addItem(valor, permutacoes, n);
+    else
+      for (i = 0; i < n; i++)
+        if (valor[i] == 0)
+          visit(i, n, valor, permutacoes);
+    
+    level = level-1;
+    valor[k] = 0;
+}
+
+int verifica_ordenado (int* vet, int n){
+  int i =0;
+  for (i=0;i<n;i++){
+    if (vet[i]<vet[i+1])
+      return 1;
+  }
+  return 0;
+
+}
+
+
+
+
+// void otima(int n, long int p){
+//   int* valor;
+//   int** permutacoes;
+//   int i;
+//   valor = alocarVetor(n);
+//   permutacoes = (int**) malloc(p*sizeof(int*));
+
+//   if(permutacoes == NULL){
+//     printf("ERRO: Nao há espaço suficiente em memória\n");
+//     exit(1);
+//   }
+//   visit(0, n, valor, permutacoes);
+  
+//   for (i=0;i<n;i++){
+//     if (verifica_ordenado(permutacoes[i],n) == 1)
+
+//   }
+
+
+//   liberarVetores(permutacoes, valor, p);
+// }
+
 
 int main(int argc, char** argv){
 
@@ -545,6 +651,12 @@ int main(int argc, char** argv){
   
   else if (strcmp(tipo,"quickrecursivomediana3") == 0){
    quickrecursivoprimeiro(vet, n);
+   imprimirVetor(n,vet);
+   free(vet);
+  }
+
+  else if (strcmp(tipo,"quickprimeiro") == 0){
+   quickprimeiro(vet, n);
    imprimirVetor(n,vet);
    free(vet);
   }

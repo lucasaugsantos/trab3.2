@@ -5,9 +5,9 @@ insertion, X
 shell, 	   X
 selection, X
 rank, 	   -
-quickrecursivoprimeiro,
-quickrecursivocentral,   
-quickrecursivomediana3,   
+quickrecursivoprimeiro,  X
+quickrecursivocentral,   X 
+quickrecursivomediana3,  X
 quickprimeiro,   
 quickcentral,
 quickmediana3, 
@@ -15,5 +15,5 @@ merge, X
 heap,  X
 radix, X
 radixbin -
-bucket.
+bucket  X
 
