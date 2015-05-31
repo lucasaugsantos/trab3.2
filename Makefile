@@ -1,6 +1,6 @@
 all: METODOS
 	./gera -a 10 > entrada.txt
-	./trab3 rank 10 < entrada.txt
+	./trab3 quickrecursivomediana3 10 < entrada.txt
 
 METODOS:
 	gcc -c gera.c

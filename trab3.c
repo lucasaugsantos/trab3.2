@@ -3,6 +3,16 @@
 #include <time.h>
 #include <string.h>
 
+
+#define n_bucket 100
+#define num_bucket 10
+#define max 10
+
+typedef struct {
+         int topo;
+         int balde[n_bucket];
+ }bucket;
+
 void lerVetor(int n, int* vetor){
   int i;
 
@@ -222,20 +232,227 @@ void shake_sort(int* vet, int n) {
   for (i=0;i<n;i++){
     vetor2[vet[i]-1]= vetor2[vet[i]-1] + 1; 
   }
+
+  //  for (i=0;i<n;i++){
+  //   printf("%d \n",vetor2[i]);  
+  // }
+
   
   for (i=0;i<n;i++){
     vetor2[i+1] = vetor2[i+1] + vetor2[i];
   }
 
-
-  printf("\nMaior elemento é: %d\n",maior);
   for (i=0;i<n;i++){
     printf("%d \n",vetor2[i]);  
   }
 
+  printf("ordenado \n");
+  for (i=0;i<n;i++){
+    if (vetor2[i+1]>vetor2[i]){
+      printf("%d \n", i+1 );
+    }
   }
 
+  }
 
+void heapsort(int* vet, int n)
+{
+   int i = n/2, pai, filho, t;
+ 
+   for (;;)
+   {
+      if (i > 0)
+      {
+          i--;
+          t = vet[i];
+      }
+      else
+      {
+          n--;
+          if (n == 0)
+             return;
+          t = vet[n];
+          vet[n] = vet[0];
+      }
+ 
+      pai = i;
+ 
+      //Primeiro será feita a comparação com o filho da esquerda.
+      filho = i*2;
+ 
+      while (filho < n)
+      {
+         //Se o filho da esquerda for menor do que o filho da direita,então será feita a troca do filho que será comparado.
+          if ((filho + 1 < n)  &&  (vet[filho + 1] > vet[filho]))
+              filho++;
+          if (vet[filho] > t)
+          {
+             vet[pai] = vet[filho];
+             pai = filho;
+             filho = pai*2 + 1;
+          }
+          else
+             break;
+      }
+      vet[pai] = t;
+   }
+
+}
+
+void radixsort(int* vetor, int n) {
+    int i;
+    int b[n];
+    int maior = vetor[0];
+    int exp = 1;
+ 
+    for (i = 0; i < n; i++) {
+        if (vetor[i] > maior)
+          maior = vetor[i];
+    }
+ 
+    while (maior/exp > 0) {
+        int bucket[10] = { 0 };
+      for (i = 0; i < n; i++)
+          bucket[(vetor[i] / exp) % 10]++; 
+      for (i = 1; i < 10; i++)
+          bucket[i] += bucket[i - 1];
+      for (i = n - 1; i >= 0; i--)
+          b[--bucket[(vetor[i] / exp) % 10]] = vetor[i];
+      for (i = 0; i < n; i++)
+          vetor[i] = b[i];
+      exp *= 10;
+    }
+}
+
+void radix_sort_binary( int* vet, int n) {
+  int queue_0[n];
+  int queue_1[n];
+  int i,j,mask;
+  for ( i = 0, mask = 1; ++i, mask <<= 1 ;) {
+    int tail_0 = 0;
+    int tail_1 = 0;
+
+    for ( i = 0; i < n; ++i ) {
+      if ( (vet[i] & mask) == 0 ) {
+        queue_0[tail_0] = vet[i];
+        ++tail_0;
+      } else {
+        queue_1[tail_1] = vet[i];
+        ++tail_1;
+      }
+    }
+
+    int i = 0;
+
+    for (j = 0; j < tail_0; ++i, ++j ) {
+      vet[i] = queue_0[j];
+    }
+
+    for (j = 0; j < tail_1; ++i, ++j ) {
+      vet[i] = queue_1[j];
+    }
+  }
+}
+
+void bucket_sort(int* vet,int n){                                     
+         bucket b[num_bucket];                                      
+         int i,j,k;                                                 
+ /* 1 */ for(i=0;i<num_bucket;i++)                    //inicializa todos os "topo"
+                 b[i].topo=0;
+ 
+ /* 2 */ for(i=0;i<n;i++){                          //verifica em que balde o elemento deve ficar
+                 j=(num_bucket)-1;
+                 while(1){
+                         if(j<0)
+                                 break;
+                         if(vet[i]>=j*10){
+                                 b[j].balde[b[j].topo]=vet[i];
+                                 (b[j].topo)++;
+                                 break;
+                         }
+                         j--;
+                 }
+         }
+ 
+ /* 3 */ for(i=0;i<num_bucket;i++)                     //ordena os baldes
+                 if(b[i].topo)
+                         bubblesort(b[i].balde,b[i].topo);
+ 
+         i=0;
+ /* 4 */ for(j=0;j<num_bucket;j++){                    //põe os elementos dos baldes de volta no vetor
+                 for(k=0;k<b[j].topo;k++){
+                         vet[i]=b[j].balde[k];
+                         i++;
+                 }
+         }
+ }
+ 
+ void quickrecursivocentral (int * vet, int n) {
+    int i, j, p, t;
+    if (n < 2)
+        return;
+    p = vet[n / 2];
+    for (i = 0, j = n - 1;; i++, j--) {
+        while (vet[i] < p)
+            i++;
+        while (p < vet[j])
+            j--;
+        if (i >= j)
+            break;
+        t = vet[i];
+        vet[i] = vet[j];
+        vet[j] = t;
+    }
+    quickrecursivocentral(vet, i);
+    quickrecursivocentral(vet + i, n - i);
+}
+
+ void quickrecursivoprimeiro (int * vet, int n) {
+    int i, j, p, t;
+    if (n < 2)
+        return;
+    p = vet[1];
+    for (i = 0, j = n - 1;; i++, j--) {
+        while (vet[i] < p)
+            i++;
+        while (p < vet[j])
+            j--;
+        if (i >= j)
+            break;
+        t = vet[i];
+        vet[i] = vet[j];
+        vet[j] = t;
+    }
+    quickrecursivoprimeiro(vet, i);
+    quickrecursivoprimeiro(vet + i, n - i);
+}
+
+void quickrecursivomediana3 (int * vet, int n) {
+    int i, j, p, t;
+    if (n < 2)
+        return;
+      int mediana[3];
+      mediana[0]=vet[0];
+      mediana[1]=vet[n-1];
+      mediana[2]= vet[n/2];
+      insertion_sort (mediana,3);
+
+    p = mediana[1];
+    for (i = 0, j = n - 1;; i++, j--) {
+        while (vet[i] < p)
+            i++;
+        while (p < vet[j])
+            j--;
+        if (i >= j)
+            break;
+        t = vet[i];
+        vet[i] = vet[j];
+        vet[j] = t;
+    }
+    quickrecursivomediana3(vet, i);
+    quickrecursivomediana3(vet + i, n - i);
+}
+ 
 
 int main(int argc, char** argv){
 
@@ -284,11 +501,53 @@ int main(int argc, char** argv){
  
   else if (strcmp(tipo,"rank") == 0){
   rank_sort(vet, n);
-  // imprimirVetor(n,vet);
-  // free(vet);
+   imprimirVetor(n,vet);
+   free(vet);
   
   }
 
+  else if (strcmp(tipo,"heap") == 0){
+   heapsort(vet, n);
+   imprimirVetor(n,vet);
+   free(vet);
   
+  }
+
+  else if (strcmp(tipo,"radix") == 0){
+   radixsort(vet, n);
+   imprimirVetor(n,vet);
+   free(vet);
+  }
+
+  else if (strcmp(tipo,"radixbin") == 0){
+   radix_sort_binary(vet, n);
+   imprimirVetor(n,vet);
+   free(vet);
+  }
+
+  else if (strcmp(tipo,"bucket") == 0){
+   bucket_sort(vet, n);
+   imprimirVetor(n,vet);
+   free(vet);
+  }
+
+  else if (strcmp(tipo,"quickrecursivocentral") == 0){
+   quickrecursivocentral(vet, n);
+   imprimirVetor(n,vet);
+   free(vet);
+  }
+
+  else if (strcmp(tipo,"quickrecursivoprimeiro") == 0){
+   quickrecursivoprimeiro(vet, n);
+   imprimirVetor(n,vet);
+   free(vet);
+  }
+  
+  else if (strcmp(tipo,"quickrecursivomediana3") == 0){
+   quickrecursivoprimeiro(vet, n);
+   imprimirVetor(n,vet);
+   free(vet);
+  }
+
   return 0;
 }
